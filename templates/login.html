@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- <link rel="stylesheet" href="../static/styles.css"> -->
+     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/6/67/Microsoft_To-Do_icon.png">
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+     <title>To-Do List</title>
+</head>
+
+<body>
+     <div class="bg">
+          <div class="logo">
+               <span>T</span><br>
+               <span>O</span><br>
+               <span>D</span><br>
+               <span>O</span><br>
+               <span> </span><br>
+               <span>L</span><br>
+               <span>I</span><br>
+               <span>S</span><br>
+               <span>T</span>
+          </div>
+          <h1 style="text-align:center;">Welcome</h1>
+          {% if user_not_exist == 1 %}
+          <script>
+               window.onload = function () {
+                    alert("Error!! Invalid User.");
+               }
+          </script>
+          {% endif %}
+          <form action="/loginn" method="POST">
+               <div class="form-controlll">
+                    <input type="text" name="email" required="">
+                    <label class="email">
+                         <span style="transition-delay:0ms">Enter</span>
+                         <span style="transition-delay:200ms">email</span>
+                    </label>
+                    <br><br>
+                    <input type="text" name="pas" required="">
+                    <label class="pas">
+                         <span style="transition-delay:0ms">Enter</span>
+                         <span style="transition-delay:200ms">password</span>
+                    </label>
+                    <br>
+                    <button type="submit" class="btn">Sign in</button>
+                    <div style="width: 280px; text-align: center;">
+                         <br>
+                         <a href="/register"
+                              style="text-decoration: none; color: rgb(83, 5, 5); font-size: 20px;">Create a new
+                              user</a>
+                    </div>
+               </div>
+          </form>
+     </div>
+
+     <br><br><br>
+</body>
+
+</html>

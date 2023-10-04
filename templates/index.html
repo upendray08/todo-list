@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="../static/styles.css"> -->
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/6/67/Microsoft_To-Do_icon.png"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <title>To-Do List</title>
+  </head>
+
+  <body>
+    <div class="bg">
+      <div
+        class="log"
+        style="width: 100%; display: flex; flex-direction: row-reverse"
+      >
+        <button
+          onclick="window.location.href='/login'"
+          style="
+            width: 60px;
+            background-color: #620262;
+            padding: 5px;
+            border: none;
+            color: #ffcdcd;
+            border-radius: 5px;
+          "
+        >
+          Logout
+        </button>
+      </div>
+      <div class="logo">
+        <span>T</span><br />
+        <span>O</span><br />
+        <span>D</span><br />
+        <span>O</span><br />
+        <span> </span><br />
+        <span>L</span><br />
+        <span>I</span><br />
+        <span>S</span><br />
+        <span>T</span>
+      </div>
+      <h1 style="text-align: center">Welcome, {{name}}</h1>
+      <form action="/" method="GET">
+        <div class="container-input">
+          <input
+            type="text"
+            placeholder="Search Task..."
+            name="q"
+            class="inputt"
+            id="search"
+            value="{{ search_query }}"
+            oninput="searchTasks()"
+          />
+        </div>
+      </form>
+      <form action="/add_task/{{email}}" method="POST">
+        <div class="form-controll">
+          <input type="text" name="title" required="" />
+          <label>
+            <span style="transition-delay: 0ms">Enter</span>
+            <span style="transition-delay: 100ms">item</span>
+            <span style="transition-delay: 200ms">here</span>
+            <span style="transition-delay: 300ms">...</span>
+          </label>
+          <button type="submit" class="btn">Add to List</button>
+          <br /><br />
+        </div>
+      </form>
+    </div>
+    {% for task in tasks %}
+    <div class="todo_card" id="{{ task['_id'] }}">
+      <form
+        action="/update_task/{{email}}/{{ task['_id'] }}"
+        style="display: flex"
+        method="POST"
+      >
+        <input
+          type="text"
+          style="
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            width: 200%;
+            font-size: 20px;
+          "
+          name="title"
+          value="{{ task['title'] }}"
+          required
+        />
+        <div class="btnss">
+          <a
+            type="button"
+            class="btnn"
+            href="/delete_task/{{email}}/{{ task['_id'] }}"
+            >Delete</a
+          >
+          <button class="btnn" style="margin-right: 5px" type="submit">
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+    {% endfor %}
+    <br /><br /><br />
+    <script>
+      function searchTasks() {
+        var searchQuery = document.getElementById("search").value.toLowerCase();
+        var tasks = document.querySelectorAll(".todo_card");
+
+        tasks.forEach(function (task) {
+          var taskTitle = task
+            .querySelector('input[name="title"]')
+            .value.toLowerCase();
+          var taskId = task.id;
+          if (taskTitle.includes(searchQuery)) {
+            document.getElementById(taskId).style.display = "block";
+          } else {
+            document.getElementById(taskId).style.display = "none";
+          }
+        });
+      }
+
+      var updateButtons = document.querySelectorAll('.btnn[type="submit"]');
+      updateButtons.forEach(function (updateButton) {
+        updateButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          var taskCard = this.closest(".todo_card");
+          var taskTitleInput = taskCard.querySelector('input[name="title"]');
+          var updateButtonText = this.innerText;
+          if (updateButtonText === "Update") {
+            taskTitleInput.removeAttribute("readonly");
+            this.innerText = "Save";
+          } else {
+            var newTitle = taskTitleInput.value;
+            taskTitleInput.setAttribute("readonly", true);
+            this.innerText = "Update";
+            taskCard.querySelector("form").submit();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
