@@ -42,6 +42,7 @@ To set up and run this project locally, follow these steps:
 3. Install the required Python packages:
 
     ```bash
+    pip freeze > requirements.txt
     pip install -r requirements.txt
     ```
 
